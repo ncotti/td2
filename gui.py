@@ -1,13 +1,15 @@
 import sys
 import serial
-from queue import Queue
+from queue import Queue, Empty
 import cv2
-from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QCheckBox, QSlider
+from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QCheckBox, QSlider, QLineEdit
 from PyQt5.QtGui import QImage, QPixmap
+from PyQt5.QtCore import Qt
 import uart_tx
 import image_process
 import uart_rx
 from const import *
+
 
 class MyCheckBox(QCheckBox):
     def __init__(self, title:str, reg_on:str, reg_off:str, queue:Queue, parent:QWidget, layout:QVBoxLayout|QHBoxLayout):
@@ -21,12 +23,10 @@ class MyCheckBox(QCheckBox):
     def on_pressed(self):
         if not self.isChecked():
             if (self.reg_on == REG_RGB565):
-                print("Holaaaaa")
                 image_process.image_format = RGB565_FORMAT
             self.queue.put(self.reg_on)
         else:
             if (self.reg_off == REG_YUV):
-                print("Caho")
                 image_process.image_format = YUV_FORMAT
             self.queue.put(self.reg_off)
 
@@ -56,13 +56,30 @@ class Example(QWidget):
     def initUI(self):
         self.vbox = QVBoxLayout()
         self.hbox = QHBoxLayout()
+        self.hbox_text = QHBoxLayout()
 
         self.okButton = QPushButton("OK")
-        self.noButton = QPushButton("No")
 
-        self.slider = QSlider()
+        # TEXT
+        self.sendButton = QPushButton("Send")
+        self.sendButton.clicked.connect(self.parseTextInput)
+        self.textReg = QLineEdit()
+        self.textReg.setMaxLength(2)
+        self.textValue = QLineEdit()
+        self.textValue.setMaxLength(2)
 
-        self.vbox.addWidget(self.slider)
+        self.hbox_text.addWidget(self.textReg)
+        self.hbox_text.addWidget(self.textValue)
+        self.hbox_text.addWidget(self.sendButton)
+        #END TEXT
+
+        self.brightness_slider = QSlider(Qt.Horizontal)
+        self.brightness_slider.setMinimum(0)
+        self.brightness_slider.setMaximum(255)
+        self.brightness_slider.setTickPosition(QSlider.TicksAbove)
+        self.brightness_slider.valueChanged.connect(self.brightness_cb)
+
+        self.vbox.addWidget(self.brightness_slider)
 
         self.hMirror = MyCheckBox("Horizontal Mirror", REG_HMIRROR_ON, REG_HMIRROR_OFF, self.register_queue, self, self.vbox)
         self.vFlip = MyCheckBox("Vertical Flip", REG_VFLIP_ON, REG_VFLIP_OFF, self.register_queue, self, self.vbox)
@@ -70,19 +87,36 @@ class Example(QWidget):
         self.colorBar = MyCheckBox("Color Bar", REG_COLOR_BAR_ON, REG_COLOR_BAR_OFF, self.register_queue, self, self.vbox)
         self.yuv = MyCheckBox("RGB565 / YUV", REG_RGB565, REG_YUV, self.register_queue, self, self.vbox)
         
-        self.XXX = MyCheckBox("XXX", 8, 8, self.register_queue, self, self.vbox)
+        #self.XXX = MyCheckBox("XXX", 8, 8, self.register_queue, self, self.vbox)
 
 
-        self.okButton.clicked.connect(lambda: self.noButton.setText("hola"))
-        self.vbox.addWidget(self.okButton)
-        self.vbox.addWidget(self.noButton)
-
+        self.vbox.addItem(self.hbox_text)
         self.hbox.addLayout(self.vbox)
 
         self.setLayout(self.hbox)
         self.setGeometry(300, 300, 300, 300)
         self.setWindowTitle("title")
 
+    def brightness_cb(self):
+        print(self.brightness_slider.value())
+
+    def parseTextInput(self):
+        reg = self.textReg.text()
+        value = self.textValue.text()
+
+        if (len(reg) != 2 or len(value) != 2):
+            self.textValue.setText("ER")
+
+        try:
+            reg = int(reg, 16)
+            value = int(value, 16)
+            self.register_queue.put((reg, value))
+            self.textValue.setText("OK")
+        except ValueError:
+            self.textValue.setText("ER")
+            
+
+        
 
 
     def display_image(self):
@@ -93,7 +127,7 @@ class Example(QWidget):
             cv2.imshow("title", image)
             cv2.waitKey(1)  # 1 millisecond
 
-        except queue.Empty:
+        except Empty:
             print("Error. Empty Queue")
 
     def destructor(self):

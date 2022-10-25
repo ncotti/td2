@@ -15,7 +15,7 @@ class UartTx (QThread):
         while (not g_stop):
             try:
                 msg = self.queue.get(block=True, timeout=1000)
-                buf = bytes(f"#{msg}*", "utf-8")
+                buf = bytes((0xFA, msg[0], msg[1], 0xFE))
                 self.uart.write(buf)
             except:
                 pass
