@@ -1,15 +1,28 @@
 from PyQt5.QtCore import QThread
+import serial
+from queue import Queue
 from const import *
 
 g_stop = 0
 
 class UartRx (QThread):
-    def __init__ (self, uart, queue):
+    """
+    Thread for reading the images from the camera. The image is written
+    to the queue.
+    """
+    def __init__ (self, uart:serial.Serial, queue:Queue):
         QThread.__init__(self)
         self.uart = uart
         self.queue = queue
 
     def run(self):
+        """
+        An image is read with the following format:
+        SOF_HEADER
+        <first_row>EOR_FOOTER
+        <second_row>EOR_FOOTER
+        EOF_FOOTER
+        """
         global g_stop
         rows = 0
         image = b""
