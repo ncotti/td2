@@ -7,7 +7,7 @@ g_stop = 0
 
 class UartTx (QThread):
     """
-    It receives from a queue from the GUI the registers to modify,
+    It receives from a queue from the GUI the registers to be modified,
     and sends them through UART in the following fashion:
     0xFA    Address     Value               0xFE
     0xFA    0xFF        Camera_function     0xFE
