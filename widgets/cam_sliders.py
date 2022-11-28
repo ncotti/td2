@@ -38,7 +38,7 @@ class CamSliders(QWidget):
     def brightness_cb(self):
         value = self.brightness_slider.value()
         if (value <= 0x80):
-            value = value | 0x80
+            value = (~value + 1) & 0xFF
 
         else:
             value = value & (~0x80)

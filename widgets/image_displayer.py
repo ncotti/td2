@@ -6,7 +6,7 @@ from PyQt5.QtGui import QImage, QPixmap, QColor
 import cv2
 import numpy as np
 
-g_stop = 0
+import torch
 
 class ImageDisplayer(QWidget):
     def __init__(self, queue:Queue):
@@ -31,10 +31,11 @@ class ImageProcessing(QThread):
         QThread.__init__(self)
         self.rawImageQueue = rawImageQueue
         self.imageLabel = imageLabel
+        self.model = torch.hub.load('ultralytics/yolov5', 'custom', path=PT_PATH)
+
 
     def run(self):
-        global g_stop
-        while(not g_stop):        
+        while(True):        
             try:
                 image = self.rawImageQueue.get(block=True, timeout=3)
             except Empty:
@@ -42,11 +43,19 @@ class ImageProcessing(QThread):
 
             if (image):
                 image = np.frombuffer(image, np.uint8).reshape(IMAGE_H, IMAGE_W, BYTES_PER_PIXEL)
-                image = cv2.cvtColor(image, cv2.COLOR_YUV2BGR_Y422)
-                self.imageLabel.setPixmap(self.convert_cv_qt(image))
+                image = cv2.cvtColor(image, cv2.COLOR_YUV2RGB_Y422)
+                results = self.model(image)
+                results.render()
+
+                #self.imageLabel.setPixmap(results.ims[0])
+                #image = self.convert_cv_qt(results.ims[0])
+
+                self.imageLabel.setPixmap(self.convert_cv_qt(results.ims[0]))
+
+                #self.imageLabel.setPixmap(self.convert_cv_qt(image))
 
 
     def convert_cv_qt(self, raw_image:cv2.Mat):
         """Convert from an opencv image to QPixmap"""
-        convert_to_Qt_format = QImage(raw_image.data, IMAGE_W, IMAGE_H, QImage.Format.Format_BGR888).scaledToWidth(self.imageLabel.width())
+        convert_to_Qt_format = QImage(raw_image, IMAGE_W, IMAGE_H, QImage.Format.Format_BGR888).scaledToWidth(self.imageLabel.width())
         return QPixmap.fromImage(convert_to_Qt_format)

@@ -5,9 +5,8 @@ from queue import Queue
 from widgets.cam_tab_widget import CamTabWidget
 from widgets.image_displayer import ImageDisplayer
 from widgets.motor_tab_widget import MotorTabWidget
-from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, \
-    QGridLayout, QGroupBox, QSlider, QTabWidget, QRadioButton, QCheckBox
-from PyQt5.QtCore import Qt
+from widgets.pie_chart import PieChart
+from PyQt5.QtWidgets import QApplication,QWidget, QHBoxLayout, QTabWidget
 import uart_tx
 import uart_rx
 from const import *
@@ -33,11 +32,15 @@ class MainWidget(QWidget):
 
         self.image_displayer = ImageDisplayer(self.rawImageQueue)
 
+        #TODO
+        self.pie_chart = PieChart()
+
         self.tabs.addTab(self.tab_cam, "Camera")
         self.tabs.addTab(self.tab_motor, "Motor")
 
         self.layout.addWidget(self.tabs)
         self.layout.addWidget(self.image_displayer.imageLabel)
+        self.layout.addWidget(self.pie_chart)
         
         self.setLayout(self.layout)
         self.setGeometry(300, 300, 300, 300)

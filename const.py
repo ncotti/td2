@@ -2,10 +2,12 @@ PORT0 = "/dev/ttyACM0"
 PORT1 = "/dev/ttyACM1"
 BAUD_RATE = 921600
 
+PT_PATH = "./cookie.pt"
 
-SOF_HEADER = b"__START"
-EOF_FOOTER = b"__END__"
-EOR_FOOTER = b"__ROW__"
+
+SOF_HEADER = b"STR__\n"
+EOF_FOOTER = b"END__\n"
+EOR_FOOTER = b"ROW__\n"
 
 IMAGE_W = 156
 IMAGE_H = 120
@@ -55,4 +57,5 @@ REG_MOTOR_ON = (0xFF, 29)
 REG_MOTOR_OFF = (0xFF, 30)
 
 REG_MOTOR_DIR = (0xFF, 31)
+REG_MOTOR_BACKWARD = (0xFF, 32)
 

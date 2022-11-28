@@ -27,14 +27,16 @@ class MotorTabWidget(QWidget):
         self.lay.addWidget(self.speed_slider, 2, 1)
 
         self.on_button = SingleCheckBox("On/Off", REG_MOTOR_ON, REG_MOTOR_OFF, self.txQueue)
+        self.on_button.setChecked(True)
 
         self.lay.addWidget(self.on_button, 0, 0)
 
         self.dir_button = SingleCheckBox("Forward/Backwards", REG_MOTOR_DIR, REG_MOTOR_DIR, self.txQueue)
+        self.dir_button.setChecked(True)
 
         self.lay.addWidget(self.dir_button)
 
         self.setLayout(self.lay)
 
     def speed_cb(self):
-        self.queue.put((0xFE, self.speed_slider.value()))
+        self.txQueue.put((0xFE, self.speed_slider.value()))

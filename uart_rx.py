@@ -3,8 +3,6 @@ import serial
 from queue import Queue
 from const import *
 
-g_stop = 0
-
 class UartRx (QThread):
     """
     Thread for reading the images from the camera. The image is written
@@ -23,25 +21,25 @@ class UartRx (QThread):
         <second_row>EOR_FOOTER
         EOF_FOOTER
         """
-        global g_stop
         rows = 0
         image = b""
-        buffer = b""
+        counter = 0
 
-        while(not g_stop):
-            buffer = buffer + self.uart.read(1) 
-        
-            if SOF_HEADER in buffer:
-                image = b""
-                buffer = b""
-                rows = 0
-                
-            elif EOR_FOOTER in buffer:
-                image = image + buffer.removesuffix(EOR_FOOTER)
-                buffer = b""
+        while(True):
+            buffer = self.uart.read_until(b"__\n")
+
+            end_row = len(buffer) - len(EOR_FOOTER)
+            aux = buffer[end_row : len(buffer)]
+
+            if aux == EOR_FOOTER:
+                image = image + buffer[0:end_row]
                 rows = rows + 1
 
-            elif EOF_FOOTER in buffer:
+            elif aux == SOF_HEADER:
+                image = b""
+                rows = 0
+
+            elif aux == EOF_FOOTER:
                 if (rows != IMAGE_H):
                     print (f"Wrong amount of rows: {rows}")
 
@@ -49,16 +47,9 @@ class UartRx (QThread):
                     print (f"Wrong Image size: {len(image)}")
 
                 else:
-                    self.queue.put(image[0:IMAGE_BYTES])
-
+                    print (f"Ok: {counter}")
+                    counter = counter + 1
+                    self.queue.put(image)
+                    
                 image = b""
-                buffer = b""
                 rows = 0
-
-
-
-    
-
-
-
-
