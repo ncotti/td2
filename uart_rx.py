@@ -3,6 +3,8 @@ import serial
 from queue import Queue
 from const import *
 
+
+
 class UartRx (QThread):
     """
     Thread for reading the images from the camera. The image is written
@@ -47,7 +49,7 @@ class UartRx (QThread):
                     print (f"Wrong Image size: {len(image)}")
 
                 else:
-                    print (f"Ok: {counter}")
+                    #print (f"Ok: {counter}")
                     counter = counter + 1
                     self.queue.put(image)
                     

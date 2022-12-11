@@ -1,6 +1,7 @@
 from queue import Queue
 from PyQt5.QtWidgets import QWidget, QPushButton, QLineEdit, QGridLayout, QLabel
 from PyQt5.QtCore import Qt
+
 class TextRegisterWidget(QWidget):
     def __init__(self, queue:Queue):
         super().__init__()

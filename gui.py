@@ -5,7 +5,7 @@ from queue import Queue
 from widgets.cam_tab_widget import CamTabWidget
 from widgets.image_displayer import ImageDisplayer
 from widgets.motor_tab_widget import MotorTabWidget
-from widgets.pie_chart import PieChart
+from widgets.chart import Chart
 from PyQt5.QtWidgets import QApplication,QWidget, QHBoxLayout, QTabWidget
 import uart_tx
 import uart_rx
@@ -26,25 +26,23 @@ class MainWidget(QWidget):
         
         self.layout = QHBoxLayout()
         self.tabs = QTabWidget()
-        self.tab_cam = CamTabWidget(self.rawImageQueue, self.txQueue)
+        self.chart = Chart()
+        self.tab_cam = CamTabWidget(self.txQueue, self.chart)
         self.tab_motor = MotorTabWidget(self.txQueue)
         self.tabs.resize(300,300)
 
-        self.image_displayer = ImageDisplayer(self.rawImageQueue)
-
-        #TODO
-        self.pie_chart = PieChart()
+        self.image_displayer = ImageDisplayer(self.rawImageQueue, self.chart)
 
         self.tabs.addTab(self.tab_cam, "Camera")
         self.tabs.addTab(self.tab_motor, "Motor")
 
         self.layout.addWidget(self.tabs)
-        self.layout.addWidget(self.image_displayer.imageLabel)
-        self.layout.addWidget(self.pie_chart)
+        self.layout.addLayout(self.image_displayer)
+        self.layout.addWidget(self.chart.chart)
         
         self.setLayout(self.layout)
         self.setGeometry(300, 300, 300, 300)
-        self.setWindowTitle("Cookie Conuter")
+        self.setWindowTitle("Cookie Counter")
 
         self.uart_tx_th.start()
         self.uart_rx_th.start()

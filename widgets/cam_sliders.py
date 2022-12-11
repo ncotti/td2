@@ -13,6 +13,8 @@ class CamSliders(QWidget):
 
         self.layout.addWidget(QLabel("Brightness"), 0,0)
         self.layout.addWidget(QLabel("Contrast"), 1,0)
+        self.layout.addWidget(QLabel("Exposure"), 2,0)
+        self.layout.addWidget(QLabel("Gain"), 3,0)
         
         self.brightness_slider = QSlider(Qt.Horizontal)
         self.brightness_slider.setMinimum(0)
@@ -27,6 +29,21 @@ class CamSliders(QWidget):
         self.contrast_slider.setTickPosition(QSlider.TicksAbove)
         self.contrast_slider.sliderReleased.connect(self.contrast_cb)
         self.layout.addWidget(self.contrast_slider, 1, 1)
+
+        self.exposure_slider = QSlider(Qt.Horizontal)
+        self.exposure_slider.setMinimum(0)
+        self.exposure_slider.setMaximum(255)
+        self.exposure_slider.setTickPosition(QSlider.TicksAbove)
+        self.exposure_slider.sliderReleased.connect(self.exposure_cb)
+        self.layout.addWidget(self.exposure_slider, 2, 1)
+
+        self.gain_slider = QSlider(Qt.Horizontal)
+        self.gain_slider.setMinimum(0)
+        self.gain_slider.setMaximum(255)
+        self.gain_slider.setTickPosition(QSlider.TicksAbove)
+        self.gain_slider.sliderReleased.connect(self.gain_cb)
+        self.layout.addWidget(self.gain_slider, 3, 1)
+
         
         self.setLayout(self.layout)
         self.reset()
@@ -46,5 +63,11 @@ class CamSliders(QWidget):
 
     def contrast_cb(self):
         self.queue.put((0x56, self.contrast_slider.value()))
+
+    def exposure_cb(self):
+        self.queue.put((0x10, self.exposure_slider.value()))
+
+    def gain_cb(self):
+        self.queue.put((0x00, self.gain_slider.value()))
 
     

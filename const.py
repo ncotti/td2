@@ -1,8 +1,14 @@
+import cv2
+
 PORT0 = "/dev/ttyACM0"
 PORT1 = "/dev/ttyACM1"
 BAUD_RATE = 921600
 
-PT_PATH = "./cookie.pt"
+#PT_PATH = "./cookie_640.pt"
+PT_PATH = "./anillo_y_rumba.pt"
+
+FORMAT = cv2.COLOR_YUV2RGB_Y422
+#FORMAT = cv2.COLOR_BGR5652BGR
 
 
 SOF_HEADER = b"STR__\n"
@@ -57,5 +63,7 @@ REG_MOTOR_ON = (0xFF, 29)
 REG_MOTOR_OFF = (0xFF, 30)
 
 REG_MOTOR_DIR = (0xFF, 31)
-REG_MOTOR_BACKWARD = (0xFF, 32)
+
+REG_MANUAL_AGC = (0xFF, 32)
+REG_AUTO_AGC   = (0xFF, 33)
 
