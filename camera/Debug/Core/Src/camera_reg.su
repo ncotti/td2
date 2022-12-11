@@ -1,0 +1,16 @@
+../Core/Src/camera_reg.c:30:6:vCameraChangeRegBit	24	static
+../Core/Src/camera_reg.c:50:6:vCameraSetReg	16	static
+../Core/Src/camera_reg.c:63:6:vCameraReset	8	static
+../Core/Src/camera_reg.c:81:12:xCameraProbe	8	static
+../Core/Src/camera_reg.c:96:6:vCameraQQVGA	8	static
+../Core/Src/camera_reg.c:111:6:vCameraQVGA	8	static
+../Core/Src/camera_reg.c:129:6:vCameraFormat	24	static
+../Core/Src/camera_reg.c:186:6:vCameraRegInit	8	static
+../Core/Src/camera_reg.c:208:13:prvSDAOutput	32	static
+../Core/Src/camera_reg.c:221:13:prvSDAInput	32	static
+../Core/Src/camera_reg.c:233:13:prvWrite	24	static
+../Core/Src/camera_reg.c:261:13:prvStart	8	static
+../Core/Src/camera_reg.c:279:13:prvStop	8	static
+../Core/Src/camera_reg.c:295:16:prucRead	16	static
+../Core/Src/camera_reg.c:336:13:prvCameraWriteReg	16	static
+../Core/Src/camera_reg.c:354:16:prucCameraReadReg	24	static

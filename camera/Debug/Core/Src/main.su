@@ -1,0 +1,12 @@
+../Core/Src/main.c:81:6:vDebugErrorRoutine	16	static
+../Core/Src/main.c:85:6:vDebugSuccessRoutine	16	static
+../Core/Src/main.c:97:5:main	48	static
+../Core/Src/main.c:180:6:SystemClock_Config	88	static
+../Core/Src/main.c:227:13:MX_NVIC_Init	8	static
+../Core/Src/main.c:242:13:MX_TIM2_Init	32	static
+../Core/Src/main.c:288:13:MX_USART2_UART_Init	8	static
+../Core/Src/main.c:319:13:MX_DMA_Init	16	static
+../Core/Src/main.c:337:13:MX_GPIO_Init	40	static
+../Core/Src/main.c:413:6:StartDefaultTask	16	static
+../Core/Src/main.c:433:6:HAL_TIM_PeriodElapsedCallback	16	static
+../Core/Src/main.c:450:6:Error_Handler	4	static,ignoring_inline_asm

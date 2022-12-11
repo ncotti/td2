@@ -1,0 +1,4 @@
+../Core/Src/camera.c:36:6:vCameraInit	16	static
+../Core/Src/camera.c:107:13:prvCameraTaskUart	160	static
+../Core/Src/camera.c:153:13:prvCameraTaskController	344	static
+../Core/Src/camera.c:216:13:prvCriticalTask	16	static

@@ -1,0 +1,10 @@
+../Core/Src/stepper.c:23:6:vStepperInit	16	static
+../Core/Src/stepper.c:30:6:vStepperStart	8	static
+../Core/Src/stepper.c:37:6:vStepperStartFromISR	24	static
+../Core/Src/stepper.c:44:6:vStepperStop	8	static
+../Core/Src/stepper.c:51:6:vStepperStopFromISR	24	static
+../Core/Src/stepper.c:58:6:vStepperChangeDirection	8	static
+../Core/Src/stepper.c:65:6:vStepperChangeDirectionFromISR	24	static
+../Core/Src/stepper.c:76:6:vStepperChangeVelocity	16	static
+../Core/Src/stepper.c:89:6:vStepperChangeVelocityFromISR	24	static
+../Core/Src/stepper.c:107:13:prvStepperTask	24	static

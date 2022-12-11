@@ -61,10 +61,6 @@ class ImageProcessing(QThread):
                 image = cv2.cvtColor(image, FORMAT)
                 results = self.model(image, linewidth=1, fontsize=12)
                 results.render()
-                print(results.pandas().xyxy[0])
-                #           xmin      ymin        xmax       ymax    confidence     class    name
-                #0      63.346367  3.765525  108.603691  48.065254    0.804265        0     Anillo
-
                 dataFrame = results.pandas().xyxy[0]
                 rows = dataFrame.shape[0]
 

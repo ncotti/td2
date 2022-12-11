@@ -1,0 +1,5 @@
+../Core/Src/tools.c:11:6:vDelayUs	0	static
+../Core/Src/tools.c:17:6:vToolsErrorRoutine	0	static
+../Core/Src/tools.c:21:6:vToolsInit	0	static
+../Core/Src/tools.c:26:6:vToolsDebounceTask	16	static
+../Core/Src/tools.c:38:9:ucToolsHex	0	static
