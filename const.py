@@ -4,12 +4,9 @@ PORT0 = "/dev/ttyACM0"
 PORT1 = "/dev/ttyACM1"
 BAUD_RATE = 921600
 
-#PT_PATH = "./cookie_640.pt"
-PT_PATH = "./anillo_y_rumba.pt"
+PT_PATH = "./weights/anillo_y_rumba_v2.pt"
 
 FORMAT = cv2.COLOR_YUV2RGB_Y422
-#FORMAT = cv2.COLOR_BGR5652BGR
-
 
 SOF_HEADER = b"STR__\n"
 EOF_FOOTER = b"END__\n"
@@ -19,7 +16,6 @@ IMAGE_W = 156
 IMAGE_H = 120
 BYTES_PER_PIXEL = 2
 IMAGE_BYTES = IMAGE_W*IMAGE_H*BYTES_PER_PIXEL
-
 
 REG_TEST_ON = (0xFF, 0)
 REG_TEST_OFF = (0xFF, 1)

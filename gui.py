@@ -29,20 +29,21 @@ class MainWidget(QWidget):
         self.chart = Chart()
         self.tab_cam = CamTabWidget(self.txQueue, self.chart)
         self.tab_motor = MotorTabWidget(self.txQueue)
-        self.tabs.resize(300,300)
+        #self.tabs.resize(300,300)
 
         self.image_displayer = ImageDisplayer(self.rawImageQueue, self.chart)
 
         self.tabs.addTab(self.tab_cam, "Camera")
         self.tabs.addTab(self.tab_motor, "Motor")
+        self.tabs.setMaximumWidth(400)
 
         self.layout.addWidget(self.tabs)
         self.layout.addLayout(self.image_displayer)
         self.layout.addWidget(self.chart.chart)
         
         self.setLayout(self.layout)
-        self.setGeometry(300, 300, 300, 300)
-        self.setWindowTitle("Cookie Counter")
+        #self.setGeometry(300, 300, 300, 300)
+        self.setWindowTitle("Production Line Inspector")
 
         self.uart_tx_th.start()
         self.uart_rx_th.start()
@@ -67,8 +68,6 @@ class MainWidget(QWidget):
                 else:
                     print("Serial device found!")
 
-
-        
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
